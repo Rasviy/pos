@@ -53,72 +53,7 @@
             text-align: center;
             font-size: 14px;
         }
-
         
-    body {
-        font-family: 'Nunito', sans-serif;
-        background-color: #f4f7fc;
-    }
-
-    .navbar {
-        background: linear-gradient(45deg, #4e54c8, #8f94fb);
-    }
-
-    .navbar-brand, .nav-link, .dropdown-toggle {
-        color: white !important;
-        font-weight: 600;
-    }
-
-    .nav-link:hover, .dropdown-menu a:hover {
-        color: #ffc107 !important;
-    }
-
-    .dropdown-menu {
-        border-radius: 10px;
-        box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
-    }
-
-    main {
-        padding: 2rem 1rem;
-        min-height: 85vh;
-    }
-
-    footer {
-        background-color: #4e54c8;
-        color: white;
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-    }
-
-    .dashboard-card {
-        border: none;
-        border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        background: white;
-        padding: 2rem;
-    }
-
-    .dashboard-header {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #4e54c8;
-    }
-
-    .custom-nav .btn {
-        border-radius: 12px;
-        margin-right: 10px;
-        font-weight: 600;
-        padding: 8px 16px;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .custom-nav .btn:hover {
-        background-color: #4e54c8;
-        color: white;
-    }
-
-
     </style>
 </head>
 <body>
@@ -160,14 +95,13 @@
                                     {{ Auth::user()->name }}
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); console.log('Logout clicked'); document.getElementById('logout-form').submit();">
+    Logout
+</a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+
                                 </div>
                             </li>
                         @endguest
@@ -182,9 +116,7 @@
         </main>
 
         {{-- Footer --}}
-        <footer>
-            &copy; {{ date('Y') }} Laravel POS App — Developed by Rasvyy
-        </footer>
+        
     </div>
 
     <!-- Bootstrap JS -->

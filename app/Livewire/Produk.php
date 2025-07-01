@@ -11,6 +11,7 @@ use App\Imports\Produk as ImporProduk;
 class Produk extends Component
 {
     use WithFileUploads;
+
     public $pilihanMenu = 'lihat';
     public $nama;
     public $kode;
@@ -19,20 +20,47 @@ class Produk extends Component
     public $produkTerpilih;
     public $fileExcel;
 
-    public function mount(){
+    public function mount()
+    {
         if (auth()->user()->peran != 'admin') {
             abort(403);
         }
     }
 
-
-    public function imporExcel()
+    public function pilihMenu($menu)
     {
-        Excel::import(new ImporProduk, $this->fileExcel);
-        $this->reset();
+        $this->pilihanMenu = $menu;
+        $this->resetInput();
     }
- 
-    public function pilihEdit($id){
+
+    public function resetInput()
+    {
+        $this->reset(['nama', 'kode', 'harga', 'stok', 'produkTerpilih', 'fileExcel']);
+    }
+
+    public function simpan()
+    {
+        $this->validate([
+            'nama' => 'required',
+            'kode' => ['required', 'unique:produks,kode'],
+            'barcode' => 'required|digits:12',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+
+        ModelProduk::create([
+            'nama' => $this->nama,
+            'kode' => $this->kode,
+            'harga' => $this->harga,
+            'stok' => $this->stok,
+        ]);
+
+        session()->flash('sukses', 'Produk berhasil ditambahkan');
+        $this->pilihMenu('lihat');
+    }
+
+    public function pilihEdit($id)
+    {
         $this->produkTerpilih = ModelProduk::findOrFail($id);
         $this->nama = $this->produkTerpilih->nama;
         $this->kode = $this->produkTerpilih->kode;
@@ -40,30 +68,29 @@ class Produk extends Component
         $this->stok = $this->produkTerpilih->stok;
         $this->pilihanMenu = 'edit';
     }
-    public function simpanEdit(){
+
+    public function simpanEdit()
+    {
         $this->validate([
             'nama' => 'required',
-            'kode' => ['required', 'unique:produks,kode, '.$this->produkTerpilih->id],
-            'harga' => 'required',
-            'stok' => 'required'
-            ], [
-                'nama.required' => 'Nama harus diisi',
-                'kode.required' => 'Kode harus diisi',
-                'kode.unique' => 'Kode sudah digunakan',
-                'harga.required' => 'harga harus diisi',
-                'stok.required' => 'stok harus diisi' 
-            ]);
-            $simpan = $this->produkTerpilih;
-            $simpan->nama = $this->nama;
-            $simpan->kode = $this->kode;
-            $simpan->stok = $this->stok;
-            $simpan->harga = $this->harga;
-            $simpan->save();
+            'kode' => ['required', 'unique:produks,kode,' . $this->produkTerpilih->id],
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
 
-            $this->reset();
-            $this->pilihanMenu = 'lihat';
+        $this->produkTerpilih->update([
+            'nama' => $this->nama,
+            'kode' => $this->kode,
+            'harga' => $this->harga,
+            'stok' => $this->stok,
+        ]);
+
+        session()->flash('sukses', 'Produk berhasil diupdate');
+        $this->pilihMenu('lihat');
     }
-    public function pilihHapus($id){
+
+    public function pilihHapus($id)
+    {
         $this->produkTerpilih = ModelProduk::findOrFail($id);
         $this->pilihanMenu = 'hapus';
     }
@@ -71,45 +98,30 @@ class Produk extends Component
     public function hapus()
     {
         $this->produkTerpilih->delete();
-        $this->reset();
+        session()->flash('sukses', 'Produk dihapus');
+        $this->pilihMenu('lihat');
     }
 
     public function batal()
     {
-        $this->reset();
+        $this->pilihMenu('lihat');
     }
 
-    public function simpan(){
-        $this->validate([
-            'nama' => 'required',
-            'kode' => ['required', 'unique:produks,kode'],
-            'harga' => 'required',
-            'stok' => 'required'
-            ], [
-                'nama.required' => 'Nama harus diisi',
-                'kode.required' => 'Kode harus diisi',
-                'kode.unique' => 'Kode sudah digunakan',
-                'harga.required' => 'harga harus diisi',
-                'stok.required' => 'stok harus diisi' 
-            ]);
-            $simpan = new ModelProduk();
-            $simpan->nama = $this->nama;
-            $simpan->kode = $this->kode;
-            $simpan->stok = $this->stok;
-            $simpan->harga = $this->harga;
-            $simpan->save();
-
-            $this->reset(['nama', 'kode', 'stok', 'harga']);
-            $this->pilihanMenu = 'lihat';
-            
-    }
-    public function pilihMenu($menu)
+    public function imporExcel()
     {
-        $this->pilihanMenu = $menu;
+        $this->validate([
+            'fileExcel' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new ImporProduk, $this->fileExcel->getRealPath());
+
+        session()->flash('sukses', 'Data produk berhasil diimpor');
+        $this->pilihMenu('lihat');
     }
+
     public function render()
     {
-        return view('livewire.produk')->with([
+        return view('livewire.produk', [
             'semuaProduk' => ModelProduk::all(),
         ]);
     }

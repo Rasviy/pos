@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController;
 use App\Livewire\Beranda;
 use App\Livewire\Laporan;
 use App\Livewire\Produk;
@@ -11,6 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Auth::routes(['register' => false, 'verify' => false]);
 
 Route::get('/home', Beranda::class)->middleware(['auth'])->name('home');
