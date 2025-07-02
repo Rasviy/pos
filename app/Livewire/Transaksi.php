@@ -63,6 +63,7 @@ class Transaksi extends Component
                 'transaksi_id' => $this->transaksiAktif->id,
                 'produk_id' => $produk->id
             ], [
+                'jumlah' == 0,
                 'jumlah' => 0,
             ]);  
             $detail->jumlah += 1;

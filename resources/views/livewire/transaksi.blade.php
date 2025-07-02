@@ -85,7 +85,7 @@
                         <div class="alert alert-danger mt-2" role="alert">
                             Uang Kurang
                         </div>
-                        @elseif ($kembalian > 0)
+                        @elseif ($kembalian >= 0)
 
                     <button class="btn btn-success mt-2 w-100" wire:click='transaksiSelesai'>Bayar</button>
                     {{-- <button class="btn btn-danger mt-2">Batal --}}
