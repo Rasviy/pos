@@ -4,19 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel POS') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Nunito', sans-serif;
@@ -58,7 +55,6 @@
 </head>
 <body>
     <div id="app">
-        {{-- Navbar --}}
         <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -70,12 +66,9 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side -->
                     <ul class="navbar-nav me-auto">
-                        {{-- Tempat menu tambahan jika perlu --}}
                     </ul>
 
-                    <!-- Right Side -->
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @if (Route::has('login'))
@@ -110,16 +103,13 @@
             </div>
         </nav>
 
-        {{-- Main Content --}}
         <main>
             @yield('content')
         </main>
 
-        {{-- Footer --}}
         
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

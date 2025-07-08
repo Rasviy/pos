@@ -24,7 +24,6 @@
     }
 </style>
 
-{{-- Hero Section --}}
 <div class="hero">
     <div class="text-center">
         <h1>FashionKu</h1>
@@ -33,7 +32,6 @@
     </div>
 </div>
 
-{{-- Kategori Populer --}}
 <div class="container mt-5">
     <h2 class="text-center mb-4">Kategori Populer</h2>
     <div class="row g-4">
@@ -58,7 +56,6 @@
     </div>
 </div>
 
-{{-- Produk Pilihan --}}
 <div class="container my-5" id="produk">
     <h2 class="text-center mb-4">Produk Pilihan</h2>
     <div class="row g-4">
